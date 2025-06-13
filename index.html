@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>坦克大战 - Tank Battle</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="src/styles/ui.css">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="src/scripts/main.js" as="script">
+    <link rel="preload" href="src/scripts/core/GameEngine.js" as="script">
+</head>
+<body>
+    <!-- 加载屏幕 -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <h1>🚗 坦克大战</h1>
+                <div class="loading-spinner"></div>
+            </div>
+            <div class="loading-text">正在加载游戏资源...</div>
+            <div class="loading-progress">
+                <div class="loading-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主游戏容器 -->
+    <div id="gameContainer" class="game-container">
+        <!-- 游戏标题栏 -->
+        <header class="game-header">
+            <div class="header-left">
+                <h1 class="game-title">🚗 坦克大战</h1>
+                <div class="game-version">v1.0.0</div>
+            </div>
+            <div class="header-center">
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">得分:</span>
+                        <span id="scoreDisplay" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">等级:</span>
+                        <span id="levelDisplay" class="stat-value">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">生命:</span>
+                        <span id="livesDisplay" class="stat-value">3</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">时间:</span>
+                        <span id="timeDisplay" class="stat-value">00:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="game-controls">
+                    <button id="pauseBtn" class="control-btn" title="暂停/继续 (P)">
+                        <span class="btn-icon">⏸️</span>
+                    </button>
+                    <button id="settingsBtn" class="control-btn" title="设置">
+                        <span class="btn-icon">⚙️</span>
+                    </button>
+                    <button id="fullscreenBtn" class="control-btn" title="全屏 (F2)">
+                        <span class="btn-icon">🔳</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 游戏主体区域 -->
+        <main class="game-main">
+            <!-- 左侧面板 -->
+            <aside class="game-sidebar left-sidebar">
+                <div class="sidebar-section">
+                    <h3>玩家状态</h3>
+                    <div class="player-info">
+                        <div class="health-container">
+                            <label>血量:</label>
+                            <div class="health-bar">
+                                <div id="playerHealthBar" class="health-fill"></div>
+                                <span id="playerHealthText" class="health-text">100/100</span>
+                            </div>
+                            <div class="lives-display">
+                                <span id="playerLivesDisplay" class="lives-count">100</span>
+                            </div>
+                        </div>
+                        <div class="ammo-container">
+                            <label>弹药:</label>
+                            <div id="ammoDisplay" class="ammo-count">∞</div>
+                        </div>
+                        <div class="weapon-container">
+                            <label>武器:</label>
+                            <div id="weaponDisplay" class="weapon-type">普通</div>
+                        </div>
+                        <div class="skills-container">
+                            <label>技能冷却:</label>
+                            <div class="skill-cooldowns">
+                                <div class="skill-item">
+                                    <span class="skill-name">激光(Q):</span>
+                                    <span id="laserCooldown" class="cooldown-text">就绪</span>
+                                </div>
+                                <div class="skill-item">
+                                    <span class="skill-name">护盾(E):</span>
+                                    <span id="shieldCooldown" class="cooldown-text">就绪</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>小地图</h3>
+                    <div id="minimap" class="minimap"></div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>游戏信息</h3>
+                    <div class="game-info">
+                        <div class="info-item">
+                            <span>敌人数量:</span>
+                            <span id="enemyCount">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span>击杀数:</span>
+                            <span id="killCount">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span>命中率:</span>
+                            <span id="accuracyDisplay">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>全局统计</h3>
+                    <div class="global-stats">
+                        <div class="info-item">
+                            <span>最高得分:</span>
+                            <span id="high-score">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span>总击杀数:</span>
+                            <span id="total-kills">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span>总游戏时间:</span>
+                            <span id="total-play-time">00:00</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 游戏画布区域 -->
+            <section class="game-canvas-container">
+                <canvas id="gameCanvas" class="game-canvas"></canvas>
+                
+                <!-- 游戏覆盖层 -->
+                <div id="gameOverlay" class="game-overlay">
+                    <!-- 暂停菜单 -->
+                    <div id="pauseMenu" class="overlay-menu pause-menu hidden">
+                        <h2>游戏暂停</h2>
+                        <div class="menu-buttons">
+                            <button id="resumeBtn" class="menu-btn primary">继续游戏</button>
+                            <button id="restartBtn" class="menu-btn">重新开始</button>
+                            <button id="mainMenuBtn" class="menu-btn">主菜单</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 游戏结束菜单 -->
+                    <div id="gameOverMenu" class="overlay-menu game-over-menu hidden">
+                        <h2 id="gameOverTitle">游戏结束</h2>
+                        <div class="game-over-stats">
+                            <div class="stat-row">
+                                <span>最终得分:</span>
+                                <span id="finalScore">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>游戏时间:</span>
+                                <span id="finalTime">00:00</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>击杀敌人:</span>
+                                <span id="finalKills">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>命中率:</span>
+                                <span id="finalAccuracy">0%</span>
+                            </div>
+                        </div>
+                        <div class="menu-buttons">
+                            <button id="playAgainBtn" class="menu-btn primary">再玩一次</button>
+                            <button id="backToMenuBtn" class="menu-btn">返回菜单</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 开始菜单 -->
+                    <div id="startMenu" class="overlay-menu start-menu">
+                        <h1 class="menu-title">🚗 坦克大战</h1>
+                        <div class="menu-subtitle">Tank Battle Game</div>
+                        <div class="menu-buttons">
+                            <button id="startGameBtn" class="menu-btn primary large">开始游戏</button>
+                            <button id="loadGameBtn" class="menu-btn large">加载游戏</button>
+                            <button id="showSettingsBtn" class="menu-btn large">游戏设置</button>
+                            <button id="showHelpBtn" class="menu-btn large">游戏帮助</button>
+                        </div>
+                        <div class="menu-footer">
+                            <p>使用 WASD 或方向键移动，空格键或鼠标射击</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FPS显示 -->
+                <div id="fpsDisplay" class="fps-display hidden">FPS: 60</div>
+                
+                <!-- 消息显示区域 -->
+                <div id="messageContainer" class="message-container">消息显示区域</div>
+            </section>
+
+            <!-- 右侧面板 -->
+            <aside class="game-sidebar right-sidebar">
+                <div class="sidebar-section">
+                    <h3>控制说明</h3>
+                    <div class="controls-help">
+                        <div class="control-item">
+                            <span class="key">WASD</span>
+                            <span class="desc">移动</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">空格</span>
+                            <span class="desc">射击</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">P</span>
+                            <span class="desc">暂停</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">F1</span>
+                            <span class="desc">调试</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">F2</span>
+                            <span class="desc">全屏</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">F5</span>
+                            <span class="desc">重启</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>快速设置</h3>
+                    <div class="quick-settings">
+                        <div class="setting-item">
+                            <label for="difficultySelect">难度:</label>
+                            <select id="difficultySelect" class="setting-select">
+                                <option value="easy">简单</option>
+                                <option value="normal" selected>普通</option>
+                                <option value="hard">困难</option>
+                                <option value="expert">专家</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="soundToggle" checked>
+                                音效
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="fpsToggle">
+                                显示FPS
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="gridToggle">
+                                显示网格
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>游戏统计</h3>
+                    <div class="game-statistics">
+                        <div class="stat-item">
+                            <span>总游戏时间:</span>
+                            <span id="totalPlayTime">00:00:00</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>最高得分:</span>
+                            <span id="highScore">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>总击杀数:</span>
+                            <span id="totalKills">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- 设置对话框 -->
+    <div id="settingsDialog" class="dialog-overlay hidden">
+        <div class="dialog">
+            <div class="dialog-header">
+                <h3>游戏设置</h3>
+                <button id="closeSettingsBtn" class="close-btn">×</button>
+            </div>
+            <div class="dialog-content">
+                <div class="settings-tabs">
+                    <button class="tab-btn active" data-tab="gameplay">游戏</button>
+                    <button class="tab-btn" data-tab="graphics">图形</button>
+                    <button class="tab-btn" data-tab="audio">音频</button>
+                    <button class="tab-btn" data-tab="controls">控制</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div id="gameplayTab" class="tab-panel active">
+                        <div class="setting-group">
+                            <label>游戏难度:</label>
+                            <select id="gameplayDifficulty">
+                                <option value="easy">简单</option>
+                                <option value="normal">普通</option>
+                                <option value="hard">困难</option>
+                                <option value="expert">专家</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="autoSave">
+                                自动保存
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="graphicsTab" class="tab-panel">
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="showParticles">
+                                粒子效果
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="showTrails">
+                                轨迹效果
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="minimapEnabled" checked>
+                                显示小地图
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="minimapGrid">
+                                小地图网格
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="minimapTrails">
+                                小地图轨迹
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="audioTab" class="tab-panel">
+                        <div class="setting-group">
+                            <label>主音量:</label>
+                            <input type="range" id="masterVolume" min="0" max="100" value="50">
+                            <span id="masterVolumeValue">50%</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>音效音量:</label>
+                            <input type="range" id="sfxVolume" min="0" max="100" value="70">
+                            <span id="sfxVolumeValue">70%</span>
+                        </div>
+                    </div>
+                    
+                    <div id="controlsTab" class="tab-panel">
+                        <div class="setting-group">
+                            <label>鼠标灵敏度:</label>
+                            <input type="range" id="mouseSensitivity" min="0.1" max="2" step="0.1" value="1">
+                            <span id="mouseSensitivityValue">1.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button id="resetSettingsBtn" class="dialog-btn secondary">重置</button>
+                <button id="saveSettingsBtn" class="dialog-btn primary">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 帮助对话框 -->
+    <div id="helpDialog" class="dialog-overlay hidden">
+        <div class="dialog">
+            <div class="dialog-header">
+                <h3>游戏帮助</h3>
+                <button id="closeHelpBtn" class="close-btn">×</button>
+            </div>
+            <div class="dialog-content">
+                <div class="help-content">
+                    <h4>游戏目标</h4>
+                    <p>消灭所有敌方坦克，保护自己的基地，获得最高分数。</p>
+                    
+                    <h4>控制方式</h4>
+                    <ul>
+                        <li><strong>WASD 或 方向键:</strong> 移动坦克</li>
+                        <li><strong>空格键 或 鼠标左键:</strong> 发射子弹</li>
+                        <li><strong>鼠标移动:</strong> 瞄准方向</li>
+                        <li><strong>P键:</strong> 暂停/继续游戏</li>
+                    </ul>
+                    
+                    <h4>子弹类型</h4>
+                    <ul>
+                        <li><strong>普通子弹:</strong> 基础攻击</li>
+                        <li><strong>充能子弹:</strong> 伤害更高</li>
+                        <li><strong>超级子弹:</strong> 穿透多个目标</li>
+                        <li><strong>激光:</strong> 瞬间命中</li>
+                        <li><strong>反弹子弹:</strong> 可以反弹</li>
+                    </ul>
+                    
+                    <h4>墙壁类型</h4>
+                    <ul>
+                        <li><strong>砖墙:</strong> 可以被摧毁</li>
+                        <li><strong>钢墙:</strong> 坚固，难以摧毁</li>
+                        <li><strong>爆炸墙:</strong> 被击中时爆炸</li>
+                        <li><strong>反射墙:</strong> 反弹子弹</li>
+                        <li><strong>治疗墙:</strong> 恢复生命值</li>
+                        <li><strong>水晶墙:</strong> 提供护盾</li>
+                    </ul>
+                    
+                    <h4>快捷键</h4>
+                    <ul>
+                        <li><strong>F1:</strong> 切换调试模式</li>
+                        <li><strong>F2:</strong> 切换全屏模式</li>
+                        <li><strong>F5:</strong> 重新开始游戏</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件 -->
+    <!-- 核心类文件 -->
+    <script src="src/scripts/entities/Tank.js"></script>
+    <script src="src/scripts/entities/Bullet.js"></script>
+    <script src="src/scripts/entities/Wall.js"></script>
+    <script src="src/scripts/entities/Explosion.js"></script>
+    
+    <!-- 工具类文件 -->
+    <script src="src/scripts/utils/MapGenerator.js"></script>
+    <script src="src/scripts/utils/CollisionDetector.js"></script>
+    <script src="src/scripts/utils/EventHandler.js"></script>
+    
+    <!-- 核心引擎文件 -->
+    <script src="src/scripts/core/AudioManager.js"></script>
+    <script src="src/scripts/core/MinimapManager.js"></script>
+    <script src="src/scripts/core/GameState.js"></script>
+    <script src="src/scripts/core/GameRenderer.js"></script>
+    <script src="src/scripts/core/GameEngine.js"></script>
+    
+    <!-- 主入口文件 -->
+    <script src="src/scripts/main.js"></script>
+    
+    <!-- UI 交互脚本 -->
+    <script src="src/scripts/ui.js"></script>
+</body>
+</html>

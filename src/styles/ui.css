@@ -1,0 +1,564 @@
+/* UI组件样式 */
+
+/* 加载屏幕 */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+}
+
+.loading-content {
+    text-align: center;
+    max-width: 400px;
+    padding: 40px;
+}
+
+.loading-logo h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #f0f0f0;
+}
+
+.loading-progress {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.loading-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    width: 0%;
+    animation: loading 3s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+/* 暂停菜单 */
+.pause-menu {
+    background: linear-gradient(145deg, rgba(44, 62, 80, 0.95), rgba(52, 73, 94, 0.95));
+    border: 2px solid #f39c12;
+    border-radius: 15px;
+    padding: 30px;
+    min-width: 300px;
+}
+
+.pause-menu h2 {
+    color: #f39c12;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 游戏结束菜单 */
+.game-over-menu {
+    background: linear-gradient(145deg, rgba(231, 76, 60, 0.95), rgba(192, 57, 43, 0.95));
+    border: 2px solid #e74c3c;
+    border-radius: 15px;
+    padding: 30px;
+    min-width: 350px;
+}
+
+.game-over-menu h2 {
+    color: #ffffff;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.game-over-stats {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.stat-row:last-child {
+    margin-bottom: 0;
+}
+
+.stat-row span:last-child {
+    color: #f1c40f;
+    font-weight: bold;
+}
+
+/* 对话框样式 */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.dialog {
+    background: linear-gradient(145deg, #2c3e50, #34495e);
+    border: 2px solid #3498db;
+    border-radius: 15px;
+    min-width: 500px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    color: white;
+}
+
+.dialog-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dialog-content {
+    padding: 20px;
+    color: #ffffff;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(52, 73, 94, 0.5);
+    border-top: 1px solid #3498db;
+}
+
+.dialog-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dialog-btn.primary {
+    background: linear-gradient(145deg, #3498db, #2980b9);
+    color: white;
+}
+
+.dialog-btn.primary:hover {
+    background: linear-gradient(145deg, #2980b9, #3498db);
+    transform: translateY(-1px);
+}
+
+.dialog-btn.secondary {
+    background: linear-gradient(145deg, #95a5a6, #7f8c8d);
+    color: white;
+}
+
+.dialog-btn.secondary:hover {
+    background: linear-gradient(145deg, #7f8c8d, #95a5a6);
+    transform: translateY(-1px);
+}
+
+/* 设置标签页 */
+.settings-tabs {
+    display: flex;
+    border-bottom: 2px solid #3498db;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #bdc3c7;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+    color: #3498db;
+    border-bottom-color: #3498db;
+    background: rgba(52, 152, 219, 0.1);
+}
+
+.tab-btn:hover {
+    color: #3498db;
+    background: rgba(52, 152, 219, 0.05);
+}
+
+.tab-content {
+    min-height: 300px;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.setting-group {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(52, 73, 94, 0.3);
+    border-radius: 8px;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #bdc3c7;
+    font-weight: bold;
+}
+
+.setting-group select,
+.setting-group input[type="range"] {
+    width: 100%;
+    padding: 8px;
+    background: #34495e;
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    color: white;
+    font-size: 1rem;
+}
+
+.setting-group input[type="range"] {
+    accent-color: #3498db;
+}
+
+.setting-group input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #3498db;
+    transform: scale(1.2);
+}
+
+/* 帮助内容 */
+.help-content {
+    line-height: 1.6;
+}
+
+.help-content h4 {
+    color: #3498db;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #3498db;
+    padding-bottom: 5px;
+}
+
+.help-content h4:first-child {
+    margin-top: 0;
+}
+
+.help-content ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.help-content li {
+    margin-bottom: 5px;
+    color: #bdc3c7;
+}
+
+.help-content strong {
+    color: #f39c12;
+}
+
+.help-content p {
+    margin-bottom: 15px;
+    color: #bdc3c7;
+}
+
+/* FPS显示 */
+.fps-display {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #00ff00;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    z-index: 100;
+}
+
+/* 消息样式 */
+.message {
+    background: linear-gradient(145deg, rgba(52, 152, 219, 0.9), rgba(41, 128, 185, 0.9));
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.message.success {
+    background: linear-gradient(145deg, rgba(39, 174, 96, 0.9), rgba(46, 204, 113, 0.9));
+}
+
+.message.warning {
+    background: linear-gradient(145deg, rgba(243, 156, 18, 0.9), rgba(241, 196, 15, 0.9));
+}
+
+.message.error {
+    background: linear-gradient(145deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2c3e50;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3498db;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2980b9;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* 工具提示 */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.8rem;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .dialog {
+        min-width: 90vw;
+        margin: 20px;
+    }
+    
+    .dialog-header {
+        padding: 15px;
+    }
+    
+    .dialog-content {
+        padding: 15px;
+    }
+    
+    .dialog-footer {
+        padding: 15px;
+    }
+    
+    .settings-tabs {
+        flex-direction: column;
+    }
+    
+    .tab-btn {
+        border-bottom: 1px solid #3498db;
+        border-right: none;
+    }
+    
+    .tab-btn.active {
+        border-bottom-color: #3498db;
+        border-right-color: transparent;
+    }
+    
+    .overlay-menu {
+        min-width: 90vw;
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .menu-title {
+        font-size: 2rem;
+    }
+    
+    .loading-logo h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-height: 600px) {
+    .dialog {
+        max-height: 95vh;
+    }
+    
+    .dialog-content {
+        max-height: 50vh;
+    }
+    
+    .overlay-menu {
+        padding: 15px;
+    }
+    
+    .menu-title {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    
+    .menu-buttons {
+        gap: 10px;
+    }
+}

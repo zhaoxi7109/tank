@@ -1,0 +1,583 @@
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+    height: 100vh;
+    margin: 0;
+}
+
+/* 游戏容器 */
+.game-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+/* 游戏标题栏 */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #2c3e50, #34495e);
+    border-bottom: 2px solid #3498db;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    min-height: 60px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.game-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #3498db;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+
+.game-version {
+    font-size: 0.8rem;
+    color: #95a5a6;
+    background-color: #34495e;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.game-stats {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #bdc3c7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.game-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #3498db, #2980b9);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(145deg, #2980b9, #3498db);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/* 游戏主体区域 */
+.game-main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* 侧边栏样式 */
+.game-sidebar {
+    width: 250px;
+    background: linear-gradient(180deg, #2c3e50, #34495e);
+    border-right: 2px solid #3498db;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.right-sidebar {
+    border-right: none;
+    border-left: 2px solid #3498db;
+}
+
+.sidebar-section {
+    margin-bottom: 20px;
+    background-color: rgba(52, 73, 94, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.sidebar-section h3 {
+    color: #3498db;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #3498db;
+    padding-bottom: 5px;
+}
+
+/* 玩家状态 */
+.player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.health-container,
+.ammo-container,
+.weapon-container,
+.skills-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skills-container {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.skill-cooldowns {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.skill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.skill-name {
+    font-size: 0.9rem;
+    color: #bdc3c7;
+}
+
+.cooldown-text {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.cooldown-text.ready {
+    color: #27ae60;
+}
+
+.cooldown-text.cooling {
+    color: #e74c3c;
+}
+
+.health-bar {
+    width: 100px;
+    height: 8px;
+    background-color: #34495e;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #3498db;
+    position: relative;
+}
+
+.health-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #27ae60 100%);
+    transition: width 0.3s ease;
+    width: 100%;
+}
+
+.health-text {
+    font-size: 0.8rem;
+    color: #bdc3c7;
+}
+
+.ammo-count,
+.weapon-type {
+    font-weight: bold;
+    color: #f39c12;
+}
+
+/* 小地图 */
+.minimap {
+    width: 100%;
+    height: 90px;
+    background-color: #2c3e50;
+    border: 2px solid #3498db;
+    border-radius: 4px;
+    position: relative;
+}
+
+/* 游戏信息 */
+.game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.info-item span:last-child {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+/* 控制说明 */
+.controls-help {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.key {
+    background-color: #34495e;
+    color: #3498db;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 1px solid #3498db;
+}
+
+.desc {
+    color: #bdc3c7;
+    font-size: 0.8rem;
+}
+
+/* 快速设置 */
+.quick-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.setting-item label {
+    font-size: 0.9rem;
+    color: #bdc3c7;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.setting-select {
+    background-color: #34495e;
+    color: #ffffff;
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
+.setting-select:focus {
+    outline: none;
+    border-color: #2980b9;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+input[type="checkbox"] {
+    accent-color: #3498db;
+}
+
+/* 游戏统计 */
+.game-statistics {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.stat-item span:last-child {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* 游戏画布容器 */
+.game-canvas-container {
+    flex: 1;
+    position: relative;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-canvas {
+    flex: 1;
+    background-color: #2a2a2a;
+    border: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* 游戏覆盖层 */
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.overlay-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, rgba(44, 62, 80, 0.95), rgba(52, 73, 94, 0.95));
+    border: 2px solid #3498db;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+.menu-title {
+    font-size: 2.5rem;
+    color: #3498db;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.menu-subtitle {
+    font-size: 1rem;
+    color: #bdc3c7;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.menu-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #3498db, #2980b9);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(145deg, #2980b9, #3498db);
+}
+
+.menu-btn.primary {
+    background: linear-gradient(145deg, #e74c3c, #c0392b);
+}
+
+.menu-btn.primary:hover {
+    background: linear-gradient(145deg, #c0392b, #e74c3c);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+.menu-btn.large {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+}
+
+.menu-footer {
+    color: #95a5a6;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* 消息容器 */
+.message-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* 游戏说明 */
+.game-instructions {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    background: rgba(44, 62, 80, 0.8);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #bdc3c7;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.game-instructions p {
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* 隐藏类 */
+.hidden {
+    display: none !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .game-sidebar {
+        width: 200px;
+    }
+    
+    .sidebar-section {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-sidebar {
+        display: none;
+    }
+    
+    .game-header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .game-stats {
+        gap: 15px;
+    }
+    
+    .stat-item {
+        font-size: 0.8rem;
+    }
+    
+    .game-title {
+        font-size: 1.5rem;
+    }
+    
+    .control-btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .menu-title {
+        font-size: 2rem;
+    }
+    
+    .menu-btn {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+    
+    .game-instructions {
+        flex-direction: column;
+        gap: 5px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-height: 600px) {
+    .game-header {
+        min-height: 50px;
+        padding: 8px 15px;
+    }
+    
+    .game-title {
+        font-size: 1.4rem;
+    }
+    
+    .sidebar-section {
+        margin-bottom: 15px;
+        padding: 10px;
+    }
+    
+    .overlay-menu {
+        padding: 20px;
+    }
+    
+    .menu-title {
+        font-size: 2rem;
+    }
+}
